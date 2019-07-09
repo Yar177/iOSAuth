@@ -20,8 +20,8 @@ class TMDBClient {
     
     enum Endpoints {
         static let base = "https://api.themoviedb.org/3"
-        static let apiKeyParam = "?api_key=\(TMDBClient.apiKey)"
-        
+        static let apiKeyParam = "?api_key=bdddad458636a0f190525a289c764e96"
+            
         case getWatchlist
         
         var stringValue: String {
