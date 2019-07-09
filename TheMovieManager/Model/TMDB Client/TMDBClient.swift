@@ -20,13 +20,16 @@ class TMDBClient {
     
     enum Endpoints {
         static let base = "https://api.themoviedb.org/3"
-        static let apiKeyParam = "?api_key=bdddad458636a0f190525a289c764e96"
-            
+        static let apiKeyParam = "?api_key=\(TMDBClient.apiKey)"
+        
         case getWatchlist
+
+        case getRequestToken
         
         var stringValue: String {
             switch self {
             case .getWatchlist: return Endpoints.base + "/account/\(Auth.accountId)/watchlist/movies" + Endpoints.apiKeyParam + "&session_id=\(Auth.sessionId)"
+            case .getRequestToken: return Endpoints.base + "/authentication/token/new" + Endpoints.apiKeyParam
             }
         }
         
@@ -51,5 +54,39 @@ class TMDBClient {
         }
         task.resume()
     }
+    
+    class func getRequestToken(completion: @escaping (Bool, Error?) -> Void) {
+    
+        print(Endpoints.getRequestToken.url)
+        
+        let task = URLSession.shared.dataTask(with: Endpoints.getRequestToken.url){data, response, error in
+            guard let data = data else{
+                 print("=====> no data")
+                
+                completion(false, error)
+                return
+            }
+            let decoder = JSONDecoder()
+            do{
+                let responseObject = try decoder.decode(RequestTokenResponse.self, from: data)
+                print("response ========> ")
+                print( responseObject)
+                
+                completion(responseObject.success, nil)
+                Auth.requestToken = responseObject.requestToken
+                
+                print("response ========> ")
+                print(Auth.requestToken)
+                
+            }catch{
+                
+                completion(false, nil)
+            }
+        }
+        task.resume()
+    }
+    
+    
+    
     
 }
