@@ -15,7 +15,7 @@ struct LoginRequest: Codable {
     
     enum CodingKeys: String, CodingKey {
         case username
-        case password 
+        case password
         case requestToken = "request_token"
     }
 }

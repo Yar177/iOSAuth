@@ -23,9 +23,10 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func loginTapped(_ sender: UIButton) {
-        
+ 
        TMDBClient.getRequestToken(completion: handelRequestTokenResponse(success:error:))
         
+        performSegue(withIdentifier: "completeLogin", sender: nil)
     }
     
     @IBAction func loginViaWebsiteTapped() {
