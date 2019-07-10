@@ -24,30 +24,27 @@ class LoginViewController: UIViewController {
     
     @IBAction func loginTapped(_ sender: UIButton) {
         
-       TMDBClient.getRequestToken(completion: { (sucess, error) in
-            if sucess {
-               
-                self.performSegue(withIdentifier: "completeLogin", sender: nil)
-                
-            }else  {
-                print("failed == > " + TMDBClient.Auth.requestToken)
-                
-                let alert = UIAlertController(title: "Login Failed", message: "Invalid Cerdentials. \nPlease try again!", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
-                    NSLog("The \"OK\" alert occured.")
-                }))
-                self.present(alert, animated: true, completion: nil)
-                
-             //   return
-            }
-        })
+       TMDBClient.getRequestToken(completion: handelRequestTokenResponse(success:error:))
         
-        
-        //performSegue(withIdentifier: "completeLogin", sender: nil)
     }
     
     @IBAction func loginViaWebsiteTapped() {
         performSegue(withIdentifier: "completeLogin", sender: nil)
+    }
+    
+    
+    
+    func handelRequestTokenResponse(success: Bool, error: Error?){
+        if success {
+            print("success == > " + TMDBClient.Auth.requestToken)
+          //  self.performSegue(withIdentifier: "completeLogin", sender: nil)
+        }else  {
+            let alert = UIAlertController(title: "Login Failed", message: "Invalid Cerdentials. \nPlease try again!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
+                NSLog("The \"OK\" alert occured.")
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
 }
