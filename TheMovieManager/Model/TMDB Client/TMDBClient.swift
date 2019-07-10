@@ -69,13 +69,13 @@ class TMDBClient {
             let decoder = JSONDecoder()
             do{
                 let responseObject = try decoder.decode(RequestTokenResponse.self, from: data)
-                print("response ========> ")
+                print("responseObject ========> ")
                 print( responseObject)
                 
                 completion(responseObject.success, nil)
-                Auth.requestToken = responseObject.requestToken
+                self.Auth.requestToken = responseObject.requestToken
                 
-                print("response ========> ")
+                print("getRequestToken ========> ")
                 print(Auth.requestToken)
                 
             }catch{
@@ -87,26 +87,37 @@ class TMDBClient {
     }
     
     class func loging(username: String, password: String, completion: @escaping (Bool, Error?) -> Void){
+        
         var request = URLRequest(url: Endpoints.login.url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        let body = LoginRequest(username: username, password: password, requestToken: Auth.requestToken)
+        let body = LoginRequest(username: username, password: password, requestToken: self.Auth.requestToken)
         request.httpBody = try! JSONEncoder().encode(body)
         
         let task = URLSession.shared.dataTask(with: request){
             (data, response, error) in
+           
             guard let data = data else {
                 completion(false, error)
+                print("post error ====>")
                 return
             }
             
             do{
                 let decoder = JSONDecoder()
                 let responseObject = try decoder.decode(RequestTokenResponse.self, from: data)
+                print("login post responseObject =====>")
+                print(responseObject)
                 Auth.requestToken = responseObject.requestToken
+                print("post success ====>")
                 completion(true, nil)
             }catch{
                 completion(false, error)
+                
+                print("post parsing error ====>")
+                print(error)
+                print("post parsing error print data ====>")
+//                print(try! JSONSerialization.jsonObject(with: data, options: []))
             }
         }
         

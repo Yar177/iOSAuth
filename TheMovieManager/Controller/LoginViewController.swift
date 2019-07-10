@@ -35,16 +35,36 @@ class LoginViewController: UIViewController {
     
     
     func handelRequestTokenResponse(success: Bool, error: Error?){
+        print("login handelRequestTokenResponse  =====> print success:")
+        print(success)
+        
         if success {
-            print("success == > " + TMDBClient.Auth.requestToken)
+           
           //  self.performSegue(withIdentifier: "completeLogin", sender: nil)
-        }else  {
-            let alert = UIAlertController(title: "Login Failed", message: "Invalid Cerdentials. \nPlease try again!", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
-                NSLog("The \"OK\" alert occured.")
-            }))
-            self.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                TMDBClient.loging(username: self.emailTextField.text ?? "" , password: self.passwordTextField.text ?? "", completion: self.handelRequestTokenResponse(success:error:))
+            }
+            
+               print("login success in handelRequestTokenResponse ======= > ")
+            print(TMDBClient.Auth.requestToken)
+            
+            
         }
+        else  {
+//            let alert = UIAlertController(title: "Login Failed", message: "Invalid Cerdentials. \nPlease try again!", preferredStyle: .alert)
+//            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
+//                NSLog("The \"OK\" alert occured.")
+//            }))
+//            self.present(alert, animated: false, completion: nil)
+            
+            print("lofin faild inside else ========> ")
+        }
+        
+    }
+    
+    func handleLoginResponse(success: Bool, Error: Error?){
+        print("handleLoginResponse ====> ")
+        print(TMDBClient.Auth.requestToken)
     }
     
 }
