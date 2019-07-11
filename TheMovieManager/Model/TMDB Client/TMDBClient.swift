@@ -26,6 +26,8 @@ class TMDBClient {
         case getRequestToken
         case login
         case newSession
+        case webAuth
+        case logout
         
         
 
@@ -36,6 +38,9 @@ class TMDBClient {
             case .getRequestToken: return Endpoints.base + "/authentication/token/new" + Endpoints.apiKeyParam
             case .login: return Endpoints.base + "/authentication/token/validate_with_login" + Endpoints.apiKeyParam
             case .newSession: return Endpoints.base + "/authentication/session/new" + Endpoints.apiKeyParam
+            case .webAuth: return "https://www.themoviedb.org/authenticate/" + Auth.requestToken + "?redirect_to=themoviemanager:authenticate"
+            case .logout: return Endpoints.base + "/authentication/session" + Endpoints.apiKeyParam
+                
 
             }
         }
@@ -68,24 +73,15 @@ class TMDBClient {
         let task = URLSession.shared.dataTask(with: Endpoints.getRequestToken.url){data, response, error in
             guard let data = data else{
                  print("=====> no data")
-                
                 completion(false, error)
                 return
             }
             let decoder = JSONDecoder()
             do{
                 let responseObject = try decoder.decode(RequestTokenResponse.self, from: data)
-                print("responseObject ========> ")
-                print( responseObject)
-                
                 completion(responseObject.success, nil)
                 self.Auth.requestToken = responseObject.requestToken
-                
-                print("getRequestToken ========> ")
-                print(Auth.requestToken)
-                
             }catch{
-                
                 completion(false, nil)
             }
         }
@@ -106,6 +102,39 @@ class TMDBClient {
             }
         }
     }
+    
+    class func createSessionId(compeletion: @escaping (Bool, Error?) -> Void) {
+        let body = PostSession(requestToken: Auth.requestToken)
+        taskForPOSTRequest(url: Endpoints.newSession.url, responseType: SessionResponse.self, body: body){
+            response, error in
+            if let response = response {
+                print("create Session Id %%%%%%%->")
+                print(response)
+                print(response.sessionId)
+                Auth.sessionId = response.sessionId
+                print("Auth.Session %%%%%%%%%--> " + Auth.sessionId)
+                compeletion(true, nil)
+            }else{
+                compeletion(false, error)
+            }
+        }
+    }
+    
+    class func logout(completion: @escaping () -> Void){
+        var request = URLRequest(url: Endpoints.logout.url)
+        request.httpMethod = "DELETE"
+        let body = LogoutRequest(sessionId: Auth.sessionId)
+        request.httpBody = try! JSONEncoder().encode(body)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        let task = URLSession.shared.dataTask(with: request){ data, response, error in
+            Auth.requestToken = ""
+            Auth.sessionId = ""
+            completion()
+        }
+        task.resume()
+    }
+    
+    
     
     
     

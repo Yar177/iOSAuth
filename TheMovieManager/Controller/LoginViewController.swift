@@ -30,42 +30,54 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func loginViaWebsiteTapped() {
-        performSegue(withIdentifier: "completeLogin", sender: nil)
+        TMDBClient.getRequestToken(){
+            (succes, error) in
+            if succes{
+                DispatchQueue.main.async {
+                     UIApplication.shared.open(TMDBClient.Endpoints.webAuth.url, options: [:], completionHandler: nil)
+                }
+            }
+        }
     }
     
-    
-    
     func handelRequestTokenResponse(success: Bool, error: Error?){
-        print("login handelRequestTokenResponse  =====> print success:")
-        print(success)
-        
         if success {
-           
-          //  self.performSegue(withIdentifier: "completeLogin", sender: nil)
             DispatchQueue.main.async {
-                TMDBClient.login(username: self.emailTextField.text ?? "" , password: self.passwordTextField.text ?? "", completion: self.handelRequestTokenResponse(success:error:))
+                TMDBClient.login(username: self.emailTextField.text ?? "" , password: self.passwordTextField.text ?? "", completion: self.handleLoginResponse(success:Error:))
             }
-            
-               print("login success in handelRequestTokenResponse ======= > ")
+            print("login success in handelRequestTokenResponse ======= > ")
             print(TMDBClient.Auth.requestToken)
-            
-            
         }
-        else  {
-//            let alert = UIAlertController(title: "Login Failed", message: "Invalid Cerdentials. \nPlease try again!", preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
-//                NSLog("The \"OK\" alert occured.")
-//            }))
-//            self.present(alert, animated: false, completion: nil)
-            
-            print("lofin faild inside else ========> ")
-        }
-        
     }
     
     func handleLoginResponse(success: Bool, Error: Error?){
         print("handleLoginResponse ====> ")
         print(TMDBClient.Auth.requestToken)
+        if success{
+            TMDBClient.createSessionId(compeletion: handelSessionResponse(sucess:Error:))
+            print("Session Id")
+            print("================%%%%>" + TMDBClient.Auth.sessionId)
+        }        else  {
+            let alert = UIAlertController(title: "Login Failed", message: "Invalid Cerdentials. \nPlease try again!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
+                NSLog("The \"OK\" alert occured.")
+            }))
+            self.present(alert, animated: false, completion: nil)
+            
+            print("lofin faild inside else ========> ")
+        }
+
     }
+    
+    
+    func handelSessionResponse(sucess: Bool, Error: Error?){
+        if sucess {
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "completeLogin", sender: nil)
+            }
+        }
+    }
+    
+    
     
 }
