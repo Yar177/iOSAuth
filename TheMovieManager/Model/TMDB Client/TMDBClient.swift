@@ -113,7 +113,11 @@ class TMDBClient {
         taskForPOSTRequest(url: Endpoints.newSession.url, responseType: SessionResponse.self, body: body){
             response, error in
             if let response = response {
+                print("create Session Id %%%%%%%->")
+                print(response)
+                print(response.sessionId)
                 Auth.sessionId = response.sessionId
+                print("Auth.Session %%%%%%%%%--> " + Auth.sessionId)
                 compeletion(true, nil)
             }else{
                 compeletion(false, error)

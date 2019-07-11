@@ -43,23 +43,20 @@ class LoginViewController: UIViewController {
            
           //  self.performSegue(withIdentifier: "completeLogin", sender: nil)
             DispatchQueue.main.async {
-                TMDBClient.login(username: self.emailTextField.text ?? "" , password: self.passwordTextField.text ?? "", completion: self.handelRequestTokenResponse(success:error:))
+                TMDBClient.login(username: self.emailTextField.text ?? "" , password: self.passwordTextField.text ?? "", completion: self.handleLoginResponse(success:Error:))
             }
-            
             print("login success in handelRequestTokenResponse ======= > ")
             print(TMDBClient.Auth.requestToken)
-            
-            
         }
-        else  {
+  //      else  {
 //            let alert = UIAlertController(title: "Login Failed", message: "Invalid Cerdentials. \nPlease try again!", preferredStyle: .alert)
 //            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
 //                NSLog("The \"OK\" alert occured.")
 //            }))
 //            self.present(alert, animated: false, completion: nil)
             
-            print("lofin faild inside else ========> ")
-        }
+//            print("lofin faild inside else ========> ")
+//        }
         
     }
     
@@ -68,6 +65,8 @@ class LoginViewController: UIViewController {
         print(TMDBClient.Auth.requestToken)
         if success{
             TMDBClient.createSessionId(compeletion: handelSessionResponse(sucess:Error:))
+            print("Session Id")
+            print("================%%%%>" + TMDBClient.Auth.sessionId)
         }
     }
     
