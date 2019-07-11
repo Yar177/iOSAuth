@@ -17,16 +17,12 @@ class LoginViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         emailTextField.text = ""
         passwordTextField.text = ""
     }
     
     @IBAction func loginTapped(_ sender: UIButton) {
- 
-       TMDBClient.getRequestToken(completion: handelRequestTokenResponse(success:error:))
-        
-       
+        TMDBClient.getRequestToken(completion: handelRequestTokenResponse(success:error:))
     }
     
     @IBAction func loginViaWebsiteTapped() {
@@ -66,7 +62,6 @@ class LoginViewController: UIViewController {
             
             print("lofin faild inside else ========> ")
         }
-
     }
     
     
