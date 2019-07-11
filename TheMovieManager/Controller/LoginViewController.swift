@@ -26,7 +26,7 @@ class LoginViewController: UIViewController {
  
        TMDBClient.getRequestToken(completion: handelRequestTokenResponse(success:error:))
         
-        performSegue(withIdentifier: "completeLogin", sender: nil)
+       
     }
     
     @IBAction func loginViaWebsiteTapped() {
@@ -43,7 +43,7 @@ class LoginViewController: UIViewController {
            
           //  self.performSegue(withIdentifier: "completeLogin", sender: nil)
             DispatchQueue.main.async {
-                TMDBClient.loging(username: self.emailTextField.text ?? "" , password: self.passwordTextField.text ?? "", completion: self.handelRequestTokenResponse(success:error:))
+                TMDBClient.login(username: self.emailTextField.text ?? "" , password: self.passwordTextField.text ?? "", completion: self.handelRequestTokenResponse(success:error:))
             }
             
                print("login success in handelRequestTokenResponse ======= > ")
