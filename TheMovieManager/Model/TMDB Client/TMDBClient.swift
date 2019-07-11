@@ -41,7 +41,7 @@ class TMDBClient {
             case .webAuth: return "https://www.themoviedb.org/authenticate/" + Auth.requestToken + "?redirect_to=themoviemanager:authenticate"
             case .logout: return Endpoints.base + "/authentication/session" + Endpoints.apiKeyParam
             case .getFavorites: return Endpoints.base + "/account/0/favorite/movies" + Endpoints.apiKeyParam + "&session_id=\(Auth.sessionId)"
-            case .search(let query): return Endpoints.base + "/search/movie" + Endpoints.apiKeyParam + "&query=\(query)"
+            case .search(let query): return Endpoints.base + "/search/movie" + Endpoints.apiKeyParam + "&query=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
                 
             }
         }
@@ -88,6 +88,7 @@ class TMDBClient {
             }
         }
     }
+    
     class func getRequestToken(completion: @escaping (Bool, Error?) -> Void) {
     
         let task = URLSession.shared.dataTask(with: Endpoints.getRequestToken.url){data, response, error in
