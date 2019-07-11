@@ -97,6 +97,7 @@ class TMDBClient {
     
     class func login(username: String, password: String, completion: @escaping (Bool, Error?) -> Void) {
         let body = LoginRequest(username: username, password: password, requestToken: Auth.requestToken)
+        
         taskForPOSTRequest(url: Endpoints.login.url, responseType: RequestTokenResponse.self, body: body) { response, error in
             if let response = response {
                 Auth.requestToken = response.requestToken
@@ -106,6 +107,21 @@ class TMDBClient {
             }
         }
     }
+    
+    class func createSessionId(compeletion: @escaping (Bool, Error?) -> Void) {
+        let body = PostSession(requestToken: Auth.requestToken)
+        taskForPOSTRequest(url: Endpoints.newSession.url, responseType: SessionResponse.self, body: body){
+            response, error in
+            if let response = response {
+                Auth.sessionId = response.sessionId
+                compeletion(true, nil)
+            }else{
+                compeletion(false, error)
+            }
+        }
+    }
+    
+    
     
     
     
