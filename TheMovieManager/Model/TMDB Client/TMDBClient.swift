@@ -45,6 +45,8 @@ class TMDBClient {
             case .getFavorites: return Endpoints.base + "/account/0/favorite/movies" + Endpoints.apiKeyParam + "&session_id=\(Auth.sessionId)"
             case .search(let query): return Endpoints.base + "/search/movie" + Endpoints.apiKeyParam + "&query=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
             case .markWatchlist: return Endpoints.base + "/account/\(Auth.accountId)/watchlist"  + Endpoints.apiKeyParam + "&session_id=\(Auth.sessionId)"
+            case .markFavorite: return Endpoints.base + "/account/\(Auth.accountId)/favorite" + Endpoints.apiKeyParam + "&session_id=\(Auth.sessionId)"
+                
                 
             }
         }
@@ -123,7 +125,21 @@ class TMDBClient {
                     response.statusCode == 13 , nil)
             }else{
                 completion(false, error)
-                print(error)
+            }
+        }
+    }
+    
+    class func markFavorite(movieId: Int, favorite: Bool, completion: @escaping (Bool, Error?) -> Void){
+        let body = MarkFavorite(mediaType: "movie", mediaId: movieId, favorite: favorite)
+        taskForPOSTRequest(url: Endpoints.markFavorite.url, responseType: TMDBResponse.self, body: body){
+            response, error in
+            if let response = response {
+                completion(response.statusCode == 1 ||
+                    response.statusCode == 12 ||
+                    response.statusCode == 13 , nil)
+            }else{
+                completion(false, error)
+                
             }
         }
     }
