@@ -75,14 +75,15 @@ class TMDBClient {
         task.resume()
     }
     
-    class func getFavorites(completion: @escaping ([Movie], Error?) -> Void) {
-        taskForGETRequest(url: Endpoints.getFavorites.url, responseType: MovieResults.self) { response, error in
+    class func getFavorites(completion: @escaping ([Movie], Error?) -> Void) -> URLSessionTask {
+        let task =  taskForGETRequest(url: Endpoints.getFavorites.url, responseType: MovieResults.self) { response, error in
             if let response = response {
                 completion(response.results, nil)
             } else {
                 completion([], error)
             }
         }
+        return task
     }
     
     class func search(query: String, completion: @escaping ([Movie], Error?) -> Void){
@@ -199,13 +200,6 @@ class TMDBClient {
         }
         task.resume()
     }
-    
-
-    
-    
-    
-    
-    
     
     
     class func taskForPOSTRequest<RequestType: Encodable, ResponseType: Decodable>(url: URL, responseType: ResponseType.Type, body: RequestType, completion: @escaping (ResponseType?, Error?) -> Void) {

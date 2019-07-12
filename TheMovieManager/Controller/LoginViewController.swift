@@ -51,7 +51,6 @@ class LoginViewController: UIViewController {
     }
     
     func handleLoginResponse(success: Bool, Error: Error?){
-        
         print("handleLoginResponse ====> ")
         print(TMDBClient.Auth.requestToken)
         if success{
@@ -64,7 +63,6 @@ class LoginViewController: UIViewController {
                 NSLog("The \"OK\" alert occured.")
             }))
             self.present(alert, animated: false, completion: nil)
-            
             print("lofin faild inside else ========> ")
         }
     }
@@ -82,18 +80,19 @@ class LoginViewController: UIViewController {
     func setLoggingIn(_ logginIn: Bool){
         if logginIn{
             activityIndicator.startAnimating()
-           
         } else{
             activityIndicator.stopAnimating()
-           
         }
-        
         emailTextField.isEnabled = !logginIn
         passwordTextField.isEnabled = !logginIn
         loginButton.isEnabled = !logginIn
         loginViaWebsiteButton.isEnabled = !logginIn
-        
-        
+    }
+    
+    func showLoginFailure(message: String) {
+        let alertVC = UIAlertController(title: "Login Failed", message: message, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        show(alertVC, sender: nil)
     }
     
     

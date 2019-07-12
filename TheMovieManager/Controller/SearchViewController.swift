@@ -17,6 +17,8 @@ class SearchViewController: UIViewController {
     
     var selectedIndex = 0
     
+    var currentSearchTask: URLSessionTask?
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             let detailVC = segue.destination as! MovieDetailViewController
@@ -29,12 +31,12 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        currentSearchTask?.cancel()
         TMDBClient.search(query: searchText){
             (movies, error) in
             self.movies = movies
             self.tableView.reloadData()
         }
-
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -63,23 +65,10 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieTableViewCell")!
-        
         let movie = movies[indexPath.row]
-        
         cell.textLabel?.text = "\(movie.title) - \(movie.releaseYear)"
-        
         cell.imageView?.image = UIImage(named: "PosterPlaceholder")
         
-//        if let posterPath = movie.posterPath {
-//            TMDBClient.downloadPosterImage(posterPath: posterPath){
-//                data ,error in
-//                guard let data = data else {return}
-//                let img = UIImage(data: data)
-//                cell.imageView?.image = img
-//                cell.setNeedsLayout()
-//            }
-//        }
-
         
         return cell
     }
