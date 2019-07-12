@@ -73,7 +73,7 @@ class MovieDetailViewController: UIViewController {
             if isFavorite{
                 MovieModel.favorites = MovieModel.favorites.filter(){$0 != self.movie}
             } else {
-                MovieModel.watchlist.append(movie)
+                MovieModel.favorites.append(movie)
             }
             
             toggleBarButton(favoriteBarButtonItem, enabled: isFavorite)

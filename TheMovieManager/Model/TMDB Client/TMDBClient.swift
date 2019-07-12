@@ -102,6 +102,7 @@ class TMDBClient {
                 completion(data, error)
             }
         }
+        task.resume()
     }
     
     class func getRequestToken(completion: @escaping (Bool, Error?) -> Void) {
