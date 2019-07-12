@@ -42,10 +42,6 @@ class MovieDetailViewController: UIViewController {
     }
     
     func handleWatchlistResponse(success: Bool, error: Error?){
-        
-        print("handel watchlist ----->")
-        print(success)
-        
         if success{
             if isWatchlist {
                 MovieModel.watchlist = MovieModel.watchlist.filter(){$0 != self.movie}
@@ -57,7 +53,20 @@ class MovieDetailViewController: UIViewController {
     }
     
     @IBAction func favoriteButtonTapped(_ sender: UIBarButtonItem) {
+        TMDBClient.markFavorite(movieId: movie.id, favorite: !isFavorite, completion: handleFavoriteResponse(success:error:))
 
+    }
+    
+    func handleFavoriteResponse(success: Bool, error: Error?){
+        if success{
+            if isFavorite{
+                MovieModel.favorites = MovieModel.favorites.filter(){$0 != self.movie}
+            } else {
+                MovieModel.watchlist.append(movie)
+            }
+            
+            toggleBarButton(favoriteBarButtonItem, enabled: isFavorite)
+        }
     }
     
     func toggleBarButton(_ button: UIBarButtonItem, enabled: Bool) {
