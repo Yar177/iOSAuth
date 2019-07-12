@@ -35,10 +35,17 @@ class MovieDetailViewController: UIViewController {
     }
     
     @IBAction func watchlistButtonTapped(_ sender: UIBarButtonItem) {
+        print(movie.id)
+        print(isWatchlist)
+        
         TMDBClient.markWatchlist(movieId: movie.id, watchlist: !isWatchlist, completion: handleWatchlistResponse(success:error:))
     }
     
     func handleWatchlistResponse(success: Bool, error: Error?){
+        
+        print("handel watchlist ----->")
+        print(success)
+        
         if success{
             if isWatchlist {
                 MovieModel.watchlist = MovieModel.watchlist.filter(){$0 != self.movie}
