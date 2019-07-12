@@ -85,6 +85,9 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="9U9-GE-UyJ">
+                                <rect key="frame" x="16" y="323" width="343" height="20"/>
+                            </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n8z-V4-qAW">
                                 <rect key="frame" x="128" y="49" width="119" height="61"/>
                                 <constraints>
@@ -99,25 +102,30 @@
                             <constraint firstItem="6au-LF-Utu" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="8fB-qK-K9k"/>
                             <constraint firstItem="SyQ-Nw-CjV" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="BUC-Z8-Xca"/>
                             <constraint firstItem="6au-LF-Utu" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="LyA-LB-78e"/>
+                            <constraint firstItem="9U9-GE-UyJ" firstAttribute="centerX" secondItem="6au-LF-Utu" secondAttribute="centerX" id="Pkh-di-20f"/>
                             <constraint firstItem="n8z-V4-qAW" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Qb3-dY-kET"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="9EU-Nu-cBG" secondAttribute="trailing" constant="16" id="YMD-so-pgt"/>
                             <constraint firstItem="9EU-Nu-cBG" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="aMw-l6-3rG"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6au-LF-Utu" secondAttribute="trailing" constant="16" id="c34-4Z-ddZ"/>
                             <constraint firstItem="SyQ-Nw-CjV" firstAttribute="top" secondItem="n8z-V4-qAW" secondAttribute="bottom" constant="8" id="l3s-Le-IHY"/>
+                            <constraint firstItem="9U9-GE-UyJ" firstAttribute="centerY" secondItem="6au-LF-Utu" secondAttribute="centerY" id="m25-NW-ISl"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="9EU-Nu-cBG" secondAttribute="bottom" constant="20" id="uUC-ZZ-la3"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="n8z-V4-qAW" secondAttribute="trailing" constant="16" id="yv3-3r-PNZ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="9U9-GE-UyJ" id="5oP-gB-P6R"/>
                         <outlet property="emailTextField" destination="qrT-hl-seK" id="kNU-Rr-pdO"/>
+                        <outlet property="loginButton" destination="XfA-1k-xWc" id="95E-6J-ukT"/>
+                        <outlet property="loginViaWebsiteButton" destination="OHw-m7-7gh" id="BV7-1f-ivR"/>
                         <outlet property="passwordTextField" destination="R9P-8h-YZr" id="3kW-y3-iTs"/>
                         <segue destination="KyE-Nk-bg6" kind="presentation" identifier="completeLogin" id="aGP-QK-myr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1546.4000000000001" y="-338.68065967016497"/>
+            <point key="canvasLocation" x="-1410" y="-331"/>
         </scene>
         <!--Favorites-->
         <scene sceneID="YFI-aL-1fW">
